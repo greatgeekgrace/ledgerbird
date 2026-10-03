@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ledgerbird — get paid without the awkward emails</title>
+<meta name="description" content="An AI accounts-receivable agent for freelancers, built on PayPal Invoicing.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23134e4a'/><path d='M9 21c3-8 9-11 15-10-3 2-4 4-4 7-4-1-7 0-11 3z' fill='%23fbbf24'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--ink)"/><path d="M9 21c3-8 9-11 15-10-3 2-4 4-4 7-4-1-7 0-11 3z" fill="var(--accent)"/></svg>
+    <span>Ledgerbird</span>
+    <span class="badge" id="envBadge">Sandbox</span>
+  </div>
+  <label class="autopilot" title="When on, the agent may email clients without asking you first">
+    <input type="checkbox" id="autopilot"><span class="switch"></span><span>Autopilot</span>
+  </label>
+</header>
+
+<main>
+  <section class="kpis" id="kpis">
+    <div class="kpi"><span>Outstanding</span><b id="k-out">—</b></div>
+    <div class="kpi warn"><span>Overdue</span><b id="k-over">—</b><small id="k-overc"></small></div>
+    <div class="kpi good"><span>Paid this month</span><b id="k-paid">—</b></div>
+    <div class="kpi"><span>Avg. days to get paid</span><b id="k-days">—</b></div>
+  </section>
+
+  <div class="grid">
+    <section class="panel board">
+      <div class="panel-head">
+        <h2>Collections queue</h2>
+        <nav class="tabs" id="tabs">
+          <button data-f="attention" class="on">Needs attention</button>
+          <button data-f="open">Awaiting payment</button>
+          <button data-f="draft">Drafts</button>
+          <button data-f="paid">Paid</button>
+          <button data-f="all">All</button>
+        </nav>
+      </div>
+      <div id="list" class="list"><div class="empty">Loading invoices from PayPal…</div></div>
+      <details class="clients">
+        <summary>Client payment habits</summary>
+        <div id="clients"></div>
+      </details>
+    </section>
+
+    <section class="panel chat">
+      <div class="panel-head"><h2>Ask Ledgerbird</h2><button class="ghost" id="clear">New chat</button></div>
+      <div id="log" class="log">
+        <div class="msg bot"><p>Hi! I watch your PayPal invoices and chase payments so you don't have to. Paste an email where a client agreed to work and I'll bill it, or ask me who owes you money.</p></div>
+      </div>
+      <div class="chips" id="chips">
+        <button data-q="Who owes me money right now, and who should I chase first?">Who owes me?</button>
+        <button data-q="Draft reminders for every overdue invoice, each in the right tone for that client.">Chase overdue</button>
+        <button data-sample="1">Bill from an email</button>
+        <button data-q="Give me a short cash-flow summary: what came in this month, what's coming, and which clients are getting slower to pay.">Cash-flow summary</button>
+      </div>
+      <form id="form" class="composer">
+        <textarea id="input" rows="2" placeholder="e.g. Bill Priya 12 hours at $85 for the onboarding redesign, due in 2 weeks" required></textarea>
+        <button type="submit" id="sendBtn" aria-label="Send">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path d="M3 20l18-8L3 4v6l12 2-12 2z" fill="currentColor"/></svg>
+        </button>
+      </form>
+    </section>
+  </div>
+</main>
+
+<dialog id="remDlg">
+  <form method="dialog" class="dlg">
+    <h3>Reminder for <span id="remWho"></span></h3>
+    <p class="muted">Tone chosen from this client's history: <b id="remTone"></b>. Edit anything before sending — PayPal emails it with the pay link.</p>
+    <label>Subject<input id="remSubj"></label>
+    <label>Message<textarea id="remNote" rows="7"></textarea></label>
+    <div class="row">
+      <button value="cancel" class="ghost">Cancel</button>
+      <button id="remSend" value="send" class="primary">Send via PayPal</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toasts" class="toasts" aria-live="polite"></div>
+<footer>Ledgerbird is a hackathon demo running on the PayPal <b>sandbox</b> — no real money moves. <a href="https://github.com/greatgeekgrace/ledgerbird" target="_blank" rel="noopener">Source on GitHub</a></footer>
+<script src="/static/app.js"></script>
+</body>
+</html>
