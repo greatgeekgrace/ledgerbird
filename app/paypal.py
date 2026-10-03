@@ -22,8 +22,8 @@ class PayPalError(Exception):
 
 class PayPal:
     def __init__(self):
-        self.client_id = os.environ["PAYPAL_CLIENT_ID"]
-        self.secret = os.environ["PAYPAL_CLIENT_SECRET"]
+        self.client_id = os.environ.get("PAYPAL_CLIENT_ID", "")
+        self.secret = os.environ.get("PAYPAL_CLIENT_SECRET", "")
         self._token = None
         self._exp = 0
         self._final = {}
@@ -32,6 +32,8 @@ class PayPal:
     async def token(self):
         if self._token and time.time() < self._exp - 60:
             return self._token
+        if not (self.client_id and self.secret):
+            raise PayPalError(503, {"message": "PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET are not configured"})
         r = await self.http.post(
             "/v1/oauth2/token",
             data={"grant_type": "client_credentials"},
