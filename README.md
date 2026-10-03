@@ -4,6 +4,8 @@
 
 Freelancers lose real money to late payments — not because clients refuse to pay, but because chasing is awkward, so it doesn't happen. Ledgerbird watches your PayPal invoices, turns "sounds good, go ahead!" emails into invoices, and writes the follow-ups you keep putting off — in the right tone for each client, based on how that client has actually paid you before.
 
+**Live demo:** https://ledgerbird.onrender.com (free instance — the first load can take ~50 s to wake up)
+
 > Runs entirely on the **PayPal sandbox**. No real money moves.
 
 ## What it does
